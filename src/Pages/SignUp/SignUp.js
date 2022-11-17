@@ -1,8 +1,8 @@
 import React, { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../Contexts/AuthProvider";
-import toast from 'react-hot-toast';
+import toast from "react-hot-toast";
 
 const SignUp = () => {
   const {
@@ -11,28 +11,31 @@ const SignUp = () => {
     handleSubmit,
   } = useForm();
 
-  const {createUser, updateUser} = useContext(AuthContext)
-  const [signUpError, setSignUpError] = useState('');
+  const { createUser, updateUser } = useContext(AuthContext);
+  const [signUpError, setSignUpError] = useState("");
+  const navigate = useNavigate();
+
+  
 
   const handleRegister = (e) => {
     console.log(e);
-    setSignUpError('')
+    setSignUpError("");
     createUser(e.email, e.password)
-    .then(result => {
-      const user = result.user;
-      console.log(user);
-      toast('User Registration Successful!')
-      const userInfo = {
-        displayName: e.name
-      }
-      updateUser(userInfo)
-      .then(() => {})
-      .catch(err => console.log(err))
-    })
-    .catch(err => {
-      console.log(err)
-      setSignUpError(err.message)
-    })
+      .then((result) => {
+        const user = result.user;
+        console.log(user);
+        toast("User Registration Successful!");
+        const userInfo = {
+          displayName: e.name,
+        };
+        updateUser(userInfo).then(() => {});
+        navigate("/")
+        
+      })
+      .catch((err) => {
+        console.log(err);
+        setSignUpError(err.message);
+      });
   };
 
   return (
@@ -84,7 +87,10 @@ const SignUp = () => {
               {...register("password", {
                 required: "Password is required",
                 minLength: { value: 6, message: "Password should be 6 letter" },
-                pattern: {value: /(?=.*[A-Z])(?=.*[!@#$&*])(?=.*[0-9])/, message: 'Password Should Be Strong'}
+                pattern: {
+                  value: /(?=.*[A-Z])(?=.*[!@#$&*])(?=.*[0-9])/,
+                  message: "Password Should Be Strong",
+                },
               })}
               className="input input-bordered w-full max-w-xs"
             />
@@ -104,7 +110,9 @@ const SignUp = () => {
         {signUpError && <p className="text-red-600">{signUpError}</p>}
         <p className="mt-5">
           Already Sign in?
-          <Link to='/login' className="text-secondary">Login</Link>
+          <Link to="/login" className="text-secondary">
+            Login
+          </Link>
         </p>
         <div className="divider">OR</div>
         <button className="btn btn-outline w-full">CONTINUE WITH GOOGLE</button>

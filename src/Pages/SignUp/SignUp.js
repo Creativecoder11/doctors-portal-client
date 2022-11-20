@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../Contexts/AuthProvider";
 import toast from "react-hot-toast";
+import useToken from "../../hooks/useToken";
 
 const SignUp = () => {
   const {
@@ -11,12 +12,16 @@ const SignUp = () => {
     handleSubmit,
   } = useForm();
 
+  const [createdUserEmail, setCreatedUserEmail] = useState('')
+  const [token] = useToken(createdUserEmail)
   const { createUser, updateUser } = useContext(AuthContext);
   const [signUpError, setSignUpError] = useState("");
   const navigate = useNavigate();
 
+  if(token){
+    navigate('/')
+  }
   
-
   const handleRegister = (e) => {
     console.log(e);
     setSignUpError("");
@@ -28,15 +33,35 @@ const SignUp = () => {
         const userInfo = {
           displayName: e.name,
         };
-        updateUser(userInfo).then(() => {});
-        navigate("/")
-        
+        updateUser(userInfo)
+          .then(() => {
+            console.log(e.name, e.email);
+            saveUser(e.name, e.email)
+          })
+          .catch(err => console.log(err));
       })
       .catch((err) => {
         console.log(err);
         setSignUpError(err.message);
       });
   };
+
+  const saveUser = (name, email) => {
+    const user = {name, email}
+    fetch('http://localhost:5000/users', {
+      method: 'POST',
+      headers: {
+        'content-type' : 'application/json'
+      },
+      body: JSON.stringify(user)
+    })
+    .then(res => res.json())
+    .then(data => {
+      console.log(data)
+      setCreatedUserEmail(email)
+    })
+  }
+
 
   return (
     <div className="h-[800px] flex justify-center items-center my-20">

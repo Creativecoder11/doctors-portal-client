@@ -2,7 +2,7 @@ import React from "react";
 import PrimaryButton from "../../../components/PrimaryButton/PrimaryButton";
 
 const AppointmentOptions = ({ option, setBooking }) => {
-  const { name, slots } = option;
+  const { name, price, slots } = option;
   return (
     <div>
       <div className="card w-96 bg-base-100 shadow-xl">
@@ -10,6 +10,7 @@ const AppointmentOptions = ({ option, setBooking }) => {
           <h2 className="text-secondary text-2xl">{name}</h2>
           <p>{slots.length > 0 ? slots[0] : 'Try Another Day'}</p>
           <p>{slots.length} {slots.length > 1 ? 'Spaces' : 'Space'} Available</p>
+          <p>Price: ${price}</p>
           <div className="justify-end">
             <label 
             disabled={slots.length === 0}

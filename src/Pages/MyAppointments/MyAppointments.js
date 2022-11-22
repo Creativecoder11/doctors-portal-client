@@ -7,7 +7,7 @@ import { AuthContext } from "../Contexts/AuthProvider";
 const MyAppointments = () => {
     const {user} = useContext(AuthContext)
     
-    const url = `http://localhost:5000/bookings?email=${user?.email}`
+    const url = `https://doctors-portal-server-olive.vercel.app/bookings?email=${user?.email}`
 
     const {data: bookings = []} = useQuery({
         queryKey: ['bookings', user?.email],
@@ -18,7 +18,7 @@ const MyAppointments = () => {
               }
             })
             const data = await res.json();
-            console.log(bookings);
+            console.log(data);
             return data
         }
     })
@@ -39,7 +39,6 @@ const MyAppointments = () => {
           </thead>
           <tbody>
             {
-                bookings &&
                 bookings?.map((booking, i) => 
                     <tr key={booking._id}>
                         <th>{i+1}</th>

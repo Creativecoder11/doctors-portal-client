@@ -29,7 +29,7 @@ const BookingModal = ({booking, selectedDate, refetch, setBooking}) => {
         }
         console.log(bookings);
 
-        fetch('http://localhost:5000/bookings', {
+        fetch('https://doctors-portal-server-olive.vercel.app/bookings', {
           method: 'POST',
           headers: {
             'content-type' : 'application/json'

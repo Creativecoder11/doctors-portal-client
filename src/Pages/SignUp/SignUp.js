@@ -6,12 +6,7 @@ import toast from "react-hot-toast";
 import useToken from "../../hooks/useToken";
 
 const SignUp = () => {
-  const {
-    register,
-    formState: { errors },
-    handleSubmit,
-  } = useForm();
-
+  const {register, formState: { errors }, handleSubmit} = useForm();
   const [createdUserEmail, setCreatedUserEmail] = useState('')
   const [token] = useToken(createdUserEmail)
   const { createUser, updateUser } = useContext(AuthContext);
@@ -48,7 +43,7 @@ const SignUp = () => {
 
   const saveUser = (name, email) => {
     const user = {name, email}
-    fetch('http://localhost:5000/users', {
+    fetch('https://doctors-portal-server-olive.vercel.app/users', {
       method: 'POST',
       headers: {
         'content-type' : 'application/json'
@@ -57,14 +52,14 @@ const SignUp = () => {
     })
     .then(res => res.json())
     .then(data => {
-      console.log(data)
+      console.log('user stored data base', data)
       setCreatedUserEmail(email)
     })
   }
 
 
   return (
-    <div className="h-[800px] flex justify-center items-center my-20">
+    <div className="h-[80vh] flex justify-center items-center my-20">
       <form onSubmit={handleSubmit(handleRegister)}>
         <div>
           <h2 className="text-center text-xl font-bold">Sign Up</h2>

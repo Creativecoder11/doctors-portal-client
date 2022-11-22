@@ -20,7 +20,7 @@ const AddDoctor = () => {
     const {data: specialties , isLoading} =useQuery({
       queryKey: ['specialty'],
       queryFn: async () => {  
-        const res = await fetch('http://localhost:5000/appointmentDoctor');
+        const res = await fetch('https://doctors-portal-server-olive.vercel.app/appointmentDoctor');
         const data = await res.json()
         return data
       }
@@ -45,7 +45,7 @@ const AddDoctor = () => {
               specialty: data.specialty,
               image: imageData.data.url
             }
-            fetch('http://localhost:5000/doctors', {
+            fetch('https://doctors-portal-server-olive.vercel.app/doctors', {
               method: "POST",
               headers: {
                 'content-type' : 'application/json',
